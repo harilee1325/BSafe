@@ -1,0 +1,95 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".Activity.HomeScreen" />
+
+
+    <ImageView
+        android:id="@+id/ic_gps"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        android:layout_margin="25dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_gps" />
+
+    <ImageView
+        android:id="@+id/account"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentLeft="true"
+        android:layout_margin="25dp"
+        android:src="@drawable/ic_account_circle_black_24dp"
+
+        />
+
+    <Button
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:foregroundGravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ride Completed"
+        android:textColor="@color/theme_white"
+        android:background="@drawable/button_shape"
+        android:padding="20dp"
+        android:visibility="gone"
+        android:layout_marginStart="120dp"
+        android:layout_marginBottom="30dp"
+        android:id="@+id/ride_completed_bt"/>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:id="@+id/card_view"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="-70dp"
+        android:background="@color/theme_white"
+        android:gravity="center"
+        app:cardCornerRadius="40dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
+                android:text="  BSafe an initative by Indian Government"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="40dp"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="We are going to search for control room vehicle nearby if found one the vehicle will be at your location shorty, if not please look for volunteers nearby."
+                android:textColor="@color/theme_light_black"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/help_line_bt"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="70dp"
+                android:layout_marginTop="150dp"
+                android:background="@drawable/button_shape"
+                android:text="COntrol Room Help line"
+                android:textAllCaps="true"
+                android:textColor="@color/theme_white" />
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>

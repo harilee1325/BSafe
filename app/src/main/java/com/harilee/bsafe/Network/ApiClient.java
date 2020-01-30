@@ -16,12 +16,13 @@ import javax.net.ssl.X509TrustManager;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
 
 
-    public static final String BASE_URL = "https://www.Slibuy.net/testmobileapi/";
+    public static final String BASE_URL = "https://b-safee.herokuapp.com/";
     private static Retrofit retrofit = null;
     @RequiresApi(api = Build.VERSION_CODES.N)
     public static Retrofit getClient() {
@@ -31,6 +32,7 @@ public class ApiClient {
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(getUnsafeOkHttpClient().build())
                     //   .client(new OkHttpClient())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
 
                     .build();
         }
