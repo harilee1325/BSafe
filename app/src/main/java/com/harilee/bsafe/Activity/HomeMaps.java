@@ -94,6 +94,7 @@ public class HomeMaps extends FragmentActivity implements OnMapReadyCallback, Pr
     private RoundedBottomSheetDialog mBottomSheetDialog;
     private LatLng mOrigin, mDestination;
     private Polyline mPolyline;
+    private String[] arrOfPath = new String[100];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,10 +120,10 @@ public class HomeMaps extends FragmentActivity implements OnMapReadyCallback, Pr
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         pullToRefresh.setOnRefreshListener(() -> {
 
+            Utility.showGifPopup(this, true, dialog);
             presenter.getPath(currentLocation.getLatitude(), currentLocation.getLongitude()
                     , Utility.getUtilityInstance().getPreference(this, Config.LAT)
                     , Utility.getUtilityInstance().getPreference(this, Config.LNG));
-            pullToRefresh.setRefreshing(false);
         });
         if (isServicesOK()) {
             getLocationPermission();
@@ -453,29 +454,11 @@ public class HomeMaps extends FragmentActivity implements OnMapReadyCallback, Pr
 
     @Override
     public void getResponse(PathModel pathModel) {
-
-//        rideCompletedBt.setOnClickListener(v ->{
-//            presenter.rideCompleted(Utility.getUtilityInstance().getPreference(this, Config.ADMIN_ID)
-//            , Utility.getUtilityInstance().getPreference(this, Config.FCM_TOKEN));
-//        });
-        if (pathModel.getSuccess().equalsIgnoreCase("yes")) {
-            {
-                cardView.setVisibility(View.GONE);
-                rideCompletedBt.setVisibility(View.VISIBLE);
-                final long period = 10000;
-                new Timer().schedule(new TimerTask() {
-                    int i = 0;
-
-                    @Override
-                    public void run() {
-                        if (pathModel.getPath().size() > 0) {
-                            updateMarker(pathModel, i);
-                            i++;
-                        }
-                    }
-                }, 1000, period);
-            }
-        }
+        Utility.showGifPopup(this, false, dialog);
+        pullToRefresh.setRefreshing(false);
+        isReferesh = false;
+        releaseRefresh();
+        updateMarker(pathModel, 0);
     }
 
     @Override
@@ -485,8 +468,8 @@ public class HomeMaps extends FragmentActivity implements OnMapReadyCallback, Pr
 
     private void updateMarker(PathModel pathModel, int i) {
 
-        String pathStr = pathModel.getPath().get(i);
-        String[] arrOfPath = pathStr.split("@", 2);
+      //  String pathStr = pathModel.getPath().get(i);
+        //path = String.valueOf(pathStr.split("@", 2));
         Log.e(TAG, "updateMarker: "+arrOfPath[0] );
         Log.e(TAG, "updateMarker: "+arrOfPath[1] );
         LatLng newOrigin = new LatLng(Double.parseDouble(arrOfPath[0])

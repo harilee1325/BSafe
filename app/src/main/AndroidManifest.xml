@@ -55,6 +55,7 @@
         <activity android:name=".Activity.Login" />
         <activity android:name=".Activity.Profile"/>
         <activity android:name=".Activity.NearbyClass"/>
+        <activity android:name=".Activity.Registration"/>
 
         <service android:name=".Firebase.MyFirebaseMessagingService">
             <intent-filter>

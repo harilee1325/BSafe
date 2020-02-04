@@ -23,5 +23,13 @@
         android:gravity="center"
         android:layout_gravity="center"
         android:id="@+id/login_bt"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Register here"
+        android:layout_margin="25dp"
+        android:textSize="18sp"
+        android:id="@+id/register_here"
+        android:textColor="@color/blue"/>
 
 </LinearLayout>

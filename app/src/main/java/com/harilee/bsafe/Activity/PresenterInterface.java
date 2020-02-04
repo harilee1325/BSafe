@@ -12,7 +12,7 @@ public interface PresenterInterface {
 
     void loginUser(String number);
 
-    void registerUser();
+    void registerUser(String phoneNumber, String userName, String eme1, String eme2, String eme3, String eme4, String eme5, String fcmToken);
 
     void addVolunter();
 
@@ -39,4 +39,5 @@ public interface PresenterInterface {
     void rideCompleted(String preference, String preference1);
 
     void handleSuccess(RideCompleted rideCompleted);
+
 }

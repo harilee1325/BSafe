@@ -44,6 +44,14 @@ public class Presenter implements PresenterInterface {
         this.homeMaps = homeMaps;
     }
 
+    private RegisterUserInterface registerUserInterface;
+    public Presenter(RegisterUserInterface registerUserInterface) {
+
+        this.registerUserInterface = registerUserInterface;
+        this.compositeDisposable = new CompositeDisposable();
+        this.apiInterFace = ApiClient.getClient().create(ApiInterface.class);
+    }
+
     @Override
     public void loginUser(String number) {
         Observable<LoginModel> observable = apiInterFace.loginUser(number);
@@ -57,13 +65,16 @@ public class Presenter implements PresenterInterface {
     }
 
     @Override
-    public void registerUser() {
-
+    public void registerUser(String phoneNumber, String userName, String eme1, String eme2, String eme3, String eme4, String eme5, String fcmToken) {
+        Observable<RegisterModel> observable = apiInterFace.registeruser(phoneNumber, userName
+        , eme1, eme2, eme3, eme4, eme5, fcmToken, "gagagagaga");
+        compositeDisposable.add(observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::handleSuccess, this::handleFailure));
     }
 
     @Override
     public void handleSuccess(RegisterModel registerModel) {
-
+        registerUserInterface.getResponse(registerModel);
     }
 
     @Override
@@ -108,6 +119,9 @@ public class Presenter implements PresenterInterface {
         if (maps!=null){
             Log.e("Tag", "handleSuccess: 1"+throwable.getLocalizedMessage() );
             maps.showMessages("Could not find any cabs nearby");
+        }
+        if (registerUserInterface!=null){
+            registerUserInterface.showMessages(throwable.getLocalizedMessage());
         }
 
     }
@@ -173,5 +187,12 @@ public class Presenter implements PresenterInterface {
         void getResponse(PathModel pathModel);
 
         void getResponse(RideCompleted rideCompleted);
+    }
+
+    protected  interface RegisterUserInterface {
+
+        void showMessages(String message);
+
+        void getResponse(RegisterModel registerModel);
     }
 }

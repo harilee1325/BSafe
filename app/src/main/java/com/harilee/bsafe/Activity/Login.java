@@ -7,13 +7,14 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.harilee.bsafe.Model.LoginModel;
 import com.harilee.bsafe.Activity.Presenter.LoginInterface;
+import com.harilee.bsafe.Model.LoginModel;
 import com.harilee.bsafe.R;
 import com.harilee.bsafe.Utils.Config;
 import com.harilee.bsafe.Utils.Utility;
@@ -29,6 +30,8 @@ public class Login extends AppCompatActivity implements LoginInterface {
     EditText numberEt;
     @BindView(R.id.login_bt)
     Button loginBt;
+    @BindView(R.id.register_here)
+    TextView registerHere;
     private Presenter presenter;
     private Dialog dialog;
     private String number;
@@ -44,6 +47,10 @@ public class Login extends AppCompatActivity implements LoginInterface {
         ButterKnife.bind(this);
         dialog = new Dialog(this);
         presenter = new Presenter(this);
+
+        registerHere.setOnClickListener(v->{
+            startActivity(new Intent(Login.this, Registration.class));
+        });
     }
 
     @Override
@@ -55,11 +62,11 @@ public class Login extends AppCompatActivity implements LoginInterface {
     @Override
     public void getResponse(LoginModel loginModel) {
         Utility.showGifPopup(this, false, dialog);
-        if (loginModel.getSuccess().equalsIgnoreCase("yes")){
+        if (loginModel.getSuccess().equalsIgnoreCase("yes")) {
             Utility.getUtilityInstance().setPreference(this, Config.IS_LOGIN, "yes");
             Utility.getUtilityInstance().setPreference(this, Config.NUM, number);
             startActivity(new Intent(Login.this, HomeMaps.class));
-        }else {
+        } else {
             showMessage(loginModel.getMessage());
         }
     }
@@ -67,16 +74,16 @@ public class Login extends AppCompatActivity implements LoginInterface {
     @Override
     public void showMessage(String message) {
         Utility.showGifPopup(this, false, dialog);
-        Toast.makeText(getApplicationContext(), message,Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     @OnClick(R.id.login_bt)
     public void onViewClicked() {
 
         number = numberEt.getText().toString().trim();
-        if (number.isEmpty()){
+        if (number.isEmpty()) {
             numberEt.setError("Please enter mobile number");
-        }else{
+        } else {
             callApi(number);
         }
     }
@@ -84,6 +91,6 @@ public class Login extends AppCompatActivity implements LoginInterface {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        finishAffinity();                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+        finishAffinity();
     }
 }
