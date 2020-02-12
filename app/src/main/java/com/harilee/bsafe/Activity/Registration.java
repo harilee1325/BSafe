@@ -3,7 +3,9 @@ package com.harilee.bsafe.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -12,10 +14,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.FirebaseException;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
@@ -34,22 +35,23 @@ import butterknife.OnClick;
 
 public class Registration extends AppCompatActivity implements Presenter.RegisterUserInterface {
 
+
     @BindView(R.id.username)
-    EditText username;
+    TextInputEditText username;
     @BindView(R.id.phone)
-    EditText phone;
+    TextInputEditText phone;
     @BindView(R.id.eme_num_1)
-    EditText emeNum1;
+    TextInputEditText emeNum1;
     @BindView(R.id.eme_num_2)
-    EditText emeNum2;
+    TextInputEditText emeNum2;
     @BindView(R.id.eme_num_3)
-    EditText emeNum3;
+    TextInputEditText emeNum3;
     @BindView(R.id.eme_num_4)
-    EditText emeNum4;
+    TextInputEditText emeNum4;
     @BindView(R.id.eme_num_5)
-    EditText emeNum5;
+    TextInputEditText emeNum5;
     @BindView(R.id.register_bt)
-    Button registerBt;
+    MaterialButton registerBt;
     private String phoneNum, userName, eme1, eme2, eme3, eme4, eme5;
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
     private String mVerificationId;
@@ -63,20 +65,67 @@ public class Registration extends AppCompatActivity implements Presenter.Registe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.registration);
         ButterKnife.bind(this);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         presenter = new Presenter(this);
+        mAuth = FirebaseAuth.getInstance();
         dialog = new Dialog(this);
         getDetails();
     }
 
     private void getDetails() {
 
-         phoneNum = phone.getText().toString().trim();
-         userName = username.getText().toString().trim();
-         eme1 = emeNum1.getText().toString().trim();
-         eme2 = emeNum2.getText().toString().trim();
-         eme3 = emeNum3.getText().toString().trim();
-         eme4 = emeNum4.getText().toString().trim();
-         eme5 = emeNum5.getText().toString().trim();
+        phoneNum = "+91 "+phone.getText().toString().trim();
+        userName = username.getText().toString().trim();
+        eme1 = emeNum1.getText().toString().trim();
+        eme2 = emeNum2.getText().toString().trim();
+        eme3 = emeNum3.getText().toString().trim();
+        eme4 = emeNum4.getText().toString().trim();
+        eme5 = emeNum5.getText().toString().trim();
+        mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+
+            @Override
+            public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+                signInWithPhoneAuthCredential(phoneAuthCredential);
+
+            }
+
+            @Override
+            public void onVerificationFailed(@NonNull FirebaseException e) {
+                Log.e("Tag", "onVerificationFailed: "+e.getLocalizedMessage() );
+                showMessages(e.getLocalizedMessage());
+            }
+
+            @Override
+            public void onCodeSent(@NonNull String verificationId,
+                                   @NonNull PhoneAuthProvider.ForceResendingToken token) {
+                // The SMS verification code has been sent to the provided phone number, we
+                // now need to ask the user to enter the code and then construct a credential
+                // by combining the code with a verification ID.
+                Log.d("tag", "onCodeSent:" + verificationId);
+                Dialog dialog = new Dialog(Registration.this);
+                dialog.setContentView(R.layout.enter_code);
+                DisplayMetrics metrics = getResources().getDisplayMetrics();
+                int width = metrics.widthPixels;
+                int height = metrics.heightPixels;
+                dialog.getWindow().setLayout((6 * width)/7, (6 * height)/7);
+
+                dialog.show();
+
+                EditText code = dialog.findViewById(R.id.enter_code);
+                Button verifyCode = dialog.findViewById(R.id.verify_num);
+
+                verifyCode.setOnClickListener(v -> {
+                    PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code.getText().toString().trim());
+                    signInWithPhoneAuthCredential(credential);
+                });
+                // Save verification ID and resending token so we can use them later
+                mVerificationId = verificationId;
+                mResendToken = token;
+
+                // ...
+            }
+        };
     }
 
     @OnClick(R.id.register_bt)
@@ -86,7 +135,7 @@ public class Registration extends AppCompatActivity implements Presenter.Registe
     }
 
     private void generateOtp() {
-        Log.e("Tag", "generateOtp: "+phoneNum );
+        Log.e("Tag", "generateOtp: " + phoneNum);
         try {
             PhoneAuthProvider.getInstance().verifyPhoneNumber(
                     phoneNum,        // Phone number to verify
@@ -94,48 +143,8 @@ public class Registration extends AppCompatActivity implements Presenter.Registe
                     TimeUnit.SECONDS,   // Unit of timeout
                     this,               // Activity (for callback binding)
                     mCallbacks);
-
-            mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-
-                @Override
-                public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
-                    signInWithPhoneAuthCredential(phoneAuthCredential);
-
-                }
-
-                @Override
-                public void onVerificationFailed(@NonNull FirebaseException e) {
-                    showMessages(e.getLocalizedMessage());
-                }
-
-                @Override
-                public void onCodeSent(@NonNull String verificationId,
-                                       @NonNull PhoneAuthProvider.ForceResendingToken token) {
-                    // The SMS verification code has been sent to the provided phone number, we
-                    // now need to ask the user to enter the code and then construct a credential
-                    // by combining the code with a verification ID.
-                    Log.d("tag", "onCodeSent:" + verificationId);
-                    Dialog dialog = new Dialog(Registration.this);
-                    dialog.setContentView(R.layout.enter_code);
-                    dialog.show();
-
-                    EditText code = dialog.findViewById(R.id.enter_code);
-                    Button verifyCode = dialog.findViewById(R.id.verify_num);
-
-                    verifyCode.setOnClickListener(v -> {
-                        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code.getText().toString().trim());
-                        signInWithPhoneAuthCredential(credential);
-                    });
-                    // Save verification ID and resending token so we can use them later
-                    mVerificationId = verificationId;
-                    mResendToken = token;
-
-                    // ...
-                }
-            };
-        }
-        catch (Exception e){
-            Log.e("Tag", "generateOtp: "+e.getLocalizedMessage() );
+        } catch (Exception e) {
+            Log.e("Tag", "generateOtp: " + e.getLocalizedMessage());
         }
 
     }
@@ -149,6 +158,7 @@ public class Registration extends AppCompatActivity implements Presenter.Registe
 
                         FirebaseUser user = task.getResult().getUser();
                         registerNewsUser(user.getPhoneNumber());
+
                         showMessages("Number verified");
                         // ...
                     } else {
@@ -164,7 +174,7 @@ public class Registration extends AppCompatActivity implements Presenter.Registe
     }
 
     private void registerNewsUser(String phoneNumber) {
-        Log.e("Tag", "registerNewsUser: "+phoneNumber );
+        Log.e("Tag", "registerNewsUser: " + phoneNumber);
         Utility.showGifPopup(this, true, dialog);
         String fcmToken = Utility.getUtilityInstance().getPreference(this, Config.FCM);
         presenter.registerUser(phoneNumber, userName, eme1, eme2, eme3, eme4, eme5, fcmToken);
@@ -179,7 +189,7 @@ public class Registration extends AppCompatActivity implements Presenter.Registe
     @Override
     public void getResponse(RegisterModel registerModel) {
         Utility.showGifPopup(this, false, dialog);
-        if (registerModel.getSuccess().equalsIgnoreCase("yes")){
+        if (registerModel.getSuccess().equalsIgnoreCase("yes")) {
             startActivity(new Intent(Registration.this, Login.class));
         }
     }

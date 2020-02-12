@@ -39,7 +39,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
         String channelId = "Default";
         NotificationCompat.Builder builder = new  NotificationCompat.Builder(this, channelId)
-                .setSmallIcon(R.drawable.profile_image)
+                .setSmallIcon(R.drawable.cop)
                 .setAutoCancel(true)
 
                 .setContentTitle(message.getNotification().getTitle())
@@ -67,7 +67,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setContentText(message)
                 .setAutoCancel(true)
                 .setSound(soundUri)
-                .setSmallIcon(R.drawable.profile_image)
+                .setSmallIcon(R.drawable.cop)
                 .setContentIntent(pendingIntent);
 
         NotificationManager notificationManager =

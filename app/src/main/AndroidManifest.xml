@@ -17,11 +17,11 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/cop"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/cop"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
+        android:theme="@style/Theme.MyApp"
         tools:ignore="GoogleAppIndexingWarning">
 
         <!--
@@ -37,11 +37,15 @@
             android:value="@string/google_maps_key" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/profile_image" />
+            android:resource="@drawable/cop" />
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+
         <activity
             android:name=".Activity.HomeMaps"
             android:label="@string/title_activity_home_maps"></activity>
@@ -55,6 +59,7 @@
         <activity android:name=".Activity.Login" />
         <activity android:name=".Activity.Profile"/>
         <activity android:name=".Activity.NearbyClass"/>
+        <activity android:name=".Activity.AddVolunteer"/>
         <activity android:name=".Activity.Registration"/>
 
         <service android:name=".Firebase.MyFirebaseMessagingService">

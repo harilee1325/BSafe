@@ -1,35 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@color/theme_white"
-    android:orientation="vertical"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/login"
+    android:orientation="vertical">
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="25dp"
-        android:maxLines="1"
-        android:maxLength="10"
-        android:inputType="number"
-        android:hint="Mobile Number"
-        android:id="@+id/number_et"
-        />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:text="Login"
-        android:gravity="center"
-        android:layout_gravity="center"
-        android:id="@+id/login_bt"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Register here"
-        android:layout_margin="25dp"
-        android:textSize="18sp"
-        android:id="@+id/register_here"
-        android:textColor="@color/blue"/>
+        android:fontFamily="@font/arizonia"
+        android:gravity="center"
+        android:text="BSafe"
+        android:textColor="@color/theme_red"
+        android:textSize="30sp"
+        android:layout_margin="10dp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</LinearLayout>
+
+    <EditText
+        android:id="@+id/number_et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="25dp"
+        android:hint="Mobile Number"
+        android:inputType="number"
+        android:maxLength="10"
+        android:maxLines="1"
+        app:layout_constraintBottom_toTopOf="@id/login_bt"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <Button
+        android:id="@+id/login_bt"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/button_shape"
+        android:gravity="center"
+        android:text="Login"
+        android:textColor="@color/theme_white"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@id/register_here"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
+        android:id="@+id/register_here"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_margin="25dp"
+        android:gravity="bottom"
+        android:text="Register here"
+        android:textColor="@color/blue"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

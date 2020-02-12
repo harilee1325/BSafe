@@ -121,6 +121,7 @@ public class Presenter implements PresenterInterface {
             maps.showMessages("Could not find any cabs nearby");
         }
         if (registerUserInterface!=null){
+            Log.e("Tag", "handleFailure: "+throwable.getLocalizedMessage() );
             registerUserInterface.showMessages(throwable.getLocalizedMessage());
         }
 

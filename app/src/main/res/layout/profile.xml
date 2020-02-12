@@ -82,7 +82,100 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
+        <LinearLayout
+            android:id="@+id/before_v"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
+            <Button
+                android:id="@+id/add_volunteer"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="100dp"
+                android:background="@drawable/button_shape"
+                android:text="Register"
+                android:textColor="@color/theme_white" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:text="Click to register as a volunteer"
+                android:textColor="@color/redLignt" />
+        </LinearLayout>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/after_v"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            app:cardBackgroundColor="@color/redLignt"
+            app:cardCornerRadius="20dp"
+            android:visibility="gone"
+            android:layout_marginTop="35dp">
+
+            <LinearLayout
+                android:layout_margin="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Name: "
+                    android:textSize="20sp"
+                    android:textColor="@color/theme_white"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hari krishnan"
+                    android:textSize="18sp"
+                    android:textColor="@color/theme_white"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Aadhar Number: "
+                    android:textSize="20sp"
+                    android:textColor="@color/theme_white"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text='asasd33dada3'
+                    android:textSize="18sp"
+                    android:textColor="@color/theme_white"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Driving License Number: "
+                    android:textSize="20sp"
+                    android:textColor="@color/theme_white"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="asdasd3caca3f"
+                    android:textSize="18sp"
+                    android:textColor="@color/theme_white"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Vehicle Number: "
+                    android:textSize="20sp"
+                    android:textColor="@color/theme_white"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="asdas3es"
+                    android:textSize="18sp"
+                    android:textColor="@color/theme_white"/>
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
 
     </LinearLayout>
 
@@ -93,7 +186,7 @@
         android:layout_gravity="bottom"
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
-        android:layout_marginBottom="-30dp"
+        android:layout_marginBottom="-10dp"
         android:autoSizeTextType="uniform"
         android:background="@color/redLignt"
         android:clickable="true"

@@ -21,15 +21,9 @@
         android:scaleType="centerCrop"
         android:src="@drawable/ic_gps" />
 
-    <ImageView
-        android:id="@+id/account"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_alignParentLeft="true"
-        android:layout_margin="25dp"
-        android:src="@drawable/ic_account_circle_black_24dp"
 
-        />
+
+
 
     <Button
         android:layout_alignParentBottom="true"
@@ -52,44 +46,91 @@
         android:id="@+id/card_view"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="-70dp"
-        android:background="@color/theme_white"
+        app:cardBackgroundColor="@color/pink"
         android:gravity="center"
         app:cardCornerRadius="40dp">
 
-        <RelativeLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <ImageView
+                android:id="@+id/account"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="140dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="25dp"
+                app:layout_constraintRight_toLeftOf="@id/help_line_bt"
+                android:layout_alignParentLeft="true"
+                app:layout_constraintTop_toTopOf="parent"
+                android:src="@drawable/woman"
+                />
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:padding="10dp"
-                android:text="  BSafe an initative by Indian Government"
-                android:textColor="@color/black"
-                android:textSize="20sp" />
-
+                android:text="Profile"
+                android:textSize="18sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginLeft="25dp"
+                android:textColor="@color/theme_white"
+                app:layout_constraintTop_toBottomOf="@id/account"/>
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:id="@+id/cop"
+                android:src="@drawable/cop"
+                android:layout_marginBottom="25dp"
+                app:layout_constraintBottom_toTopOf="@id/help_line_bt"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                />
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="40dp"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="We are going to search for control room vehicle nearby if found one the vehicle will be at your location shorty, if not please look for volunteers nearby."
-                android:textColor="@color/theme_light_black"
-                android:textSize="18sp" />
+                android:text="Officer"
+                android:id="@+id/cop_tv"
+                android:textSize="18sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:textColor="@color/theme_white"
+                app:layout_constraintTop_toBottomOf="@id/cop"/>
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:id="@+id/volunteer"
+                android:visibility="gone"
+                android:src="@drawable/volunteer"
+                android:layout_marginBottom="25dp"
+                app:layout_constraintBottom_toTopOf="@id/help_line_bt"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Volunteer"
+                android:id="@+id/volunteer_tv"
+                android:visibility="gone"
+                android:textSize="18sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:textColor="@color/theme_white"
+                app:layout_constraintTop_toBottomOf="@id/volunteer"/>
 
             <Button
                 android:id="@+id/help_line_bt"
-                android:layout_width="250dp"
+                android:layout_width="200dp"
+                android:padding="15dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="70dp"
                 android:layout_marginTop="150dp"
                 android:background="@drawable/button_shape"
-                android:text="COntrol Room Help line"
-                android:textAllCaps="true"
+                android:text="Pick Me!"
+                android:textAllCaps="false"
                 android:textColor="@color/theme_white" />
-        </RelativeLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </RelativeLayout>

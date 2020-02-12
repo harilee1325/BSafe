@@ -26,7 +26,6 @@ import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.deishelon.roundedbottomsheet.RoundedBottomSheetDialog;
 import com.google.android.gms.common.ConnectionResult;
@@ -53,8 +52,6 @@ import com.harilee.bsafe.Utils.Config;
 import com.harilee.bsafe.Utils.Utility;
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -65,18 +62,25 @@ public class HomeMaps extends FragmentActivity implements OnMapReadyCallback, Pr
     private static final int ERROR_DIALOG_REQUEST = 9001;
     @BindView(R.id.ic_gps)
     ImageView icGps;
-    @BindView(R.id.drawer_main)
-    DrawerLayout drawerMain;
-    @BindView(R.id.help_line_bt)
-    Button helpLineBt;
-    @BindView(R.id.pullToRefresh)
-    SwipeRefreshLayout pullToRefresh;
-    @BindView(R.id.account)
-    ImageView account;
     @BindView(R.id.ride_completed_bt)
     Button rideCompletedBt;
+    @BindView(R.id.account)
+    ImageView account;
+    @BindView(R.id.cop)
+    ImageView cop;
+    @BindView(R.id.cop_tv)
+    TextView copTv;
+    @BindView(R.id.volunteer)
+    ImageView volunteer;
+    @BindView(R.id.volunteer_tv)
+    TextView volunteerTv;
+    @BindView(R.id.help_line_bt)
+    Button helpLineBt;
     @BindView(R.id.card_view)
     CardView cardView;
+    @BindView(R.id.drawer_main)
+    DrawerLayout drawerMain;
+
     private Presenter presenter;
     private ArrayList markerPoints = new ArrayList();
     private Boolean mLocationPermissionsGranted = false;
@@ -85,7 +89,7 @@ public class HomeMaps extends FragmentActivity implements OnMapReadyCallback, Pr
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COURSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
-    private static final float DEFAULT_ZOOM = 15f;
+    private static final float DEFAULT_ZOOM = 14;
     private String TAG = "Map";
     private Dialog dialog;
     private boolean isReferesh = false;
@@ -116,15 +120,14 @@ public class HomeMaps extends FragmentActivity implements OnMapReadyCallback, Pr
         presenter = new Presenter(this, HomeMaps.this);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
 
-        releaseRefresh();
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        pullToRefresh.setOnRefreshListener(() -> {
+        // pullToRefresh.setOnRefreshListener(() -> {
 
-            Utility.showGifPopup(this, true, dialog);
-            presenter.getPath(currentLocation.getLatitude(), currentLocation.getLongitude()
+        // Utility.showGifPopup(this, true, dialog);
+            /*presenter.getPath(currentLocation.getLatitude(), currentLocation.getLongitude()
                     , Utility.getUtilityInstance().getPreference(this, Config.LAT)
-                    , Utility.getUtilityInstance().getPreference(this, Config.LNG));
-        });
+                    , Utility.getUtilityInstance().getPreference(this, Config.LNG));*/
+        //    });
         if (isServicesOK()) {
             getLocationPermission();
 
@@ -141,7 +144,6 @@ public class HomeMaps extends FragmentActivity implements OnMapReadyCallback, Pr
             case R.id.help_line_bt:
                 isReferesh = true;
                 getCabNearby();
-                releaseRefresh();
                 break;
         }
     }
@@ -152,13 +154,6 @@ public class HomeMaps extends FragmentActivity implements OnMapReadyCallback, Pr
         startActivity(new Intent(HomeMaps.this, Profile.class));
     }
 
-    private void releaseRefresh() {
-        if (isReferesh) {
-            pullToRefresh.setEnabled(true);
-        } else {
-            pullToRefresh.setEnabled(false);
-        }
-    }
 
     private void getCabNearby() {
 
@@ -332,7 +327,6 @@ public class HomeMaps extends FragmentActivity implements OnMapReadyCallback, Pr
     @Override
     protected void onResume() {
         super.onResume();
-        releaseRefresh();
         isReferesh = false;
 
     }
@@ -341,7 +335,6 @@ public class HomeMaps extends FragmentActivity implements OnMapReadyCallback, Pr
     protected void onStart() {
         super.onStart();
         isReferesh = false;
-        releaseRefresh();
     }
 
     @Override
@@ -455,9 +448,7 @@ public class HomeMaps extends FragmentActivity implements OnMapReadyCallback, Pr
     @Override
     public void getResponse(PathModel pathModel) {
         Utility.showGifPopup(this, false, dialog);
-        pullToRefresh.setRefreshing(false);
         isReferesh = false;
-        releaseRefresh();
         updateMarker(pathModel, 0);
     }
 
@@ -468,10 +459,10 @@ public class HomeMaps extends FragmentActivity implements OnMapReadyCallback, Pr
 
     private void updateMarker(PathModel pathModel, int i) {
 
-      //  String pathStr = pathModel.getPath().get(i);
+        //  String pathStr = pathModel.getPath().get(i);
         //path = String.valueOf(pathStr.split("@", 2));
-        Log.e(TAG, "updateMarker: "+arrOfPath[0] );
-        Log.e(TAG, "updateMarker: "+arrOfPath[1] );
+        Log.e(TAG, "updateMarker: " + arrOfPath[0]);
+        Log.e(TAG, "updateMarker: " + arrOfPath[1]);
         LatLng newOrigin = new LatLng(Double.parseDouble(arrOfPath[0])
                 , Double.parseDouble(arrOfPath[1]));
         LatLng destination = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
