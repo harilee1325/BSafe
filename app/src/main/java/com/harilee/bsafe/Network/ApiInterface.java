@@ -1,10 +1,13 @@
 package com.harilee.bsafe.Network;
 
+import com.harilee.bsafe.Model.AddVolunteerModel;
 import com.harilee.bsafe.Model.AssignCabModel;
 import com.harilee.bsafe.Model.LoginModel;
 import com.harilee.bsafe.Model.NearbyModel;
 import com.harilee.bsafe.Model.PathModel;
+import com.harilee.bsafe.Model.ProfileModel;
 import com.harilee.bsafe.Model.RegisterModel;
+import com.harilee.bsafe.Model.VolunteerModel;
 
 import io.reactivex.Observable;
 import retrofit2.http.Field;
@@ -36,5 +39,18 @@ public interface ApiInterface {
             ,@Field("emergency_contact1") String eme1,@Field("emergency_contact2")  String eme2
             ,@Field("emergency_contact3")  String eme3,@Field("emergency_contact4")  String eme4
             ,@Field("emergency_contact5")  String eme5,@Field("fcm_token")  String fcmToken
-            ,@Field("identification") String identification);
+            ,@Field("identification") String identification, @Field("is_vol") String isVol);
+
+    @POST("add-volunteer")
+    @FormUrlEncoded
+    Observable<AddVolunteerModel> addVolunteer(@Field("vehicle_number") String vehicleNumStr
+            ,@Field("licence_number") String licenceNumStr,@Field("identification") String idNumStr
+            ,@Field("name") String name,@Field("fcm_token") String fcm,@Field("latitude") String lat
+            ,@Field("longitude") String lng, @Field("status")String status, @Field("assigned") String assigned);
+
+    @GET("get-profile/{number}")
+    Observable<ProfileModel> getProfile(@Path("number") String number);
+
+    @GET("get-volunteer-data/{name}")
+    Observable<VolunteerModel> getVolunteer(@Path("name") String name);
 }

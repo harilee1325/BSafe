@@ -50,16 +50,21 @@ public class Utility {
         dialog.setCancelable(false);
         CirclesLoadingView imageView = dialog.findViewById(R.id.loader);
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        if (!((Activity) mContext).isFinishing()) {
-            try {
-                if (show) {
-                    dialog.show();
-                } else {
-                    dialog.dismiss();
+        if (mContext != null) {
+            if (!((Activity) mContext).isFinishing()) {
+                try {
+                    if (show) {
+                        if (!dialog.isShowing())
+                            dialog.show();
+                    } else {
+                        if (dialog.isShowing())
+                            dialog.dismiss();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
+
         }
 
     }

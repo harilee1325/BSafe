@@ -8,5 +8,6 @@ public class Config {
     public static final String LNG = "lng";
     public static final String FCM_TOKEN = "fcm_admin";
     public static final String ADMIN_ID = "admin";
+    public static final String NAME = "name";
     public static String IS_LOGIN = "login";
 }

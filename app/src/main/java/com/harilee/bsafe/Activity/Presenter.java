@@ -10,8 +10,10 @@ import com.harilee.bsafe.Model.AssignCabModel;
 import com.harilee.bsafe.Model.LoginModel;
 import com.harilee.bsafe.Model.NearbyModel;
 import com.harilee.bsafe.Model.PathModel;
+import com.harilee.bsafe.Model.ProfileModel;
 import com.harilee.bsafe.Model.RegisterModel;
 import com.harilee.bsafe.Model.RideCompleted;
+import com.harilee.bsafe.Model.VolunteerModel;
 import com.harilee.bsafe.Network.ApiClient;
 import com.harilee.bsafe.Network.ApiInterface;
 
@@ -27,6 +29,7 @@ public class Presenter implements PresenterInterface {
     private LoginInterface loginInterface;
     private CompositeDisposable compositeDisposable;
     private ApiInterface apiInterFace;
+
     public Presenter(LoginInterface loginInterface) {
 
         this.loginInterface = loginInterface;
@@ -37,6 +40,7 @@ public class Presenter implements PresenterInterface {
 
     private MapsInterface maps;
     private HomeMaps homeMaps;
+
     public Presenter(MapsInterface maps, HomeMaps homeMaps) {
         this.maps = maps;
         this.compositeDisposable = new CompositeDisposable();
@@ -45,9 +49,27 @@ public class Presenter implements PresenterInterface {
     }
 
     private RegisterUserInterface registerUserInterface;
+
     public Presenter(RegisterUserInterface registerUserInterface) {
 
         this.registerUserInterface = registerUserInterface;
+        this.compositeDisposable = new CompositeDisposable();
+        this.apiInterFace = ApiClient.getClient().create(ApiInterface.class);
+    }
+
+    private AddVolunteerInterface addVolunteerInterface;
+
+    public Presenter(AddVolunteerInterface addVolunteer) {
+
+        this.addVolunteerInterface = addVolunteer;
+        this.compositeDisposable = new CompositeDisposable();
+        this.apiInterFace = ApiClient.getClient().create(ApiInterface.class);
+    }
+
+    private ProfileInterface profileInterface;
+
+    public Presenter(ProfileInterface profileInterface) {
+        this.profileInterface = profileInterface;
         this.compositeDisposable = new CompositeDisposable();
         this.apiInterFace = ApiClient.getClient().create(ApiInterface.class);
     }
@@ -67,7 +89,7 @@ public class Presenter implements PresenterInterface {
     @Override
     public void registerUser(String phoneNumber, String userName, String eme1, String eme2, String eme3, String eme4, String eme5, String fcmToken) {
         Observable<RegisterModel> observable = apiInterFace.registeruser(phoneNumber, userName
-        , eme1, eme2, eme3, eme4, eme5, fcmToken, "gagagagaga");
+                , eme1, eme2, eme3, eme4, eme5, fcmToken, "gagagagaga", "0");
         compositeDisposable.add(observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::handleSuccess, this::handleFailure));
     }
@@ -78,13 +100,19 @@ public class Presenter implements PresenterInterface {
     }
 
     @Override
-    public void addVolunter() {
+    public void addVolunter(String vehicleNumStr, String licenceNumStr, String idNumStr
+            , String name, String fcm, String lat, String lng) {
+
+        Observable<AddVolunteerModel> observable = apiInterFace.addVolunteer(vehicleNumStr, licenceNumStr, idNumStr, name
+                , fcm, lat, lng, "0", "0");
+        compositeDisposable.add(observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::handleSuccess, this::handleFailure));
 
     }
 
     @Override
     public void handleSuccess(AddVolunteerModel addVolunteerModel) {
-
+        addVolunteerInterface.getResponse(addVolunteerModel);
     }
 
     @Override
@@ -104,8 +132,8 @@ public class Presenter implements PresenterInterface {
             nearbyClass.getResponse(searchCabModel);
             homeMaps.startActivity(new Intent(homeMaps, NearbyClass.class));*/
             maps.cancelLoader();
-        }else{
-            Log.e("Tag", "handleSuccess: "+"here");
+        } else {
+            Log.e("Tag", "handleSuccess: " + "here");
             maps.showMessages(searchCabModel.getMessage());
         }
     }
@@ -113,16 +141,26 @@ public class Presenter implements PresenterInterface {
     @Override
     public void handleFailure(Throwable throwable) {
 
-        if (loginInterface!=null){
+        if (loginInterface != null) {
             loginInterface.showMessage("Could not login, Please check your credentials and try again.");
         }
-        if (maps!=null){
-            Log.e("Tag", "handleSuccess: 1"+throwable.getLocalizedMessage() );
+        if (maps != null) {
+            Log.e("Tag", "handleSuccess: 1" + throwable.getLocalizedMessage());
             maps.showMessages("Could not find any cabs nearby");
         }
-        if (registerUserInterface!=null){
-            Log.e("Tag", "handleFailure: "+throwable.getLocalizedMessage() );
+        if (registerUserInterface != null) {
+            Log.e("Tag", "handleFailure: " + throwable.getLocalizedMessage());
             registerUserInterface.showMessages(throwable.getLocalizedMessage());
+        }
+        if (addVolunteerInterface != null) {
+            Log.e("Tag", "handleSuccess: 1" + throwable.getLocalizedMessage());
+
+            addVolunteerInterface.showMessages(throwable.getLocalizedMessage());
+        }
+        if (profileInterface != null) {
+            Log.e("Tag", "handleSuccess: 1" + throwable.getLocalizedMessage());
+
+            profileInterface.showMessages(throwable.getLocalizedMessage());
         }
 
     }
@@ -138,7 +176,7 @@ public class Presenter implements PresenterInterface {
     public void handleSuccess(AssignCabModel assignCabModel) {
         if (assignCabModel.getSuccess().equalsIgnoreCase("yes")) {
             maps.getResponse(assignCabModel);
-        }else{
+        } else {
             maps.showMessages(assignCabModel.getMessage());
         }
     }
@@ -146,7 +184,7 @@ public class Presenter implements PresenterInterface {
     @Override
     public void getPath(double latitude, double longitude, String preference, String preference1) {
         Observable<PathModel> observable = apiInterFace.getPath(String.valueOf(latitude), String.valueOf(longitude), preference
-        , preference1);
+                , preference1);
         compositeDisposable.add(observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::handleSuccess, this::handleFailure));
     }
@@ -164,6 +202,30 @@ public class Presenter implements PresenterInterface {
     @Override
     public void handleSuccess(RideCompleted rideCompleted) {
 
+    }
+
+    @Override
+    public void getProfileData(String number) {
+        Observable<ProfileModel> observable = apiInterFace.getProfile(number);
+        compositeDisposable.add(observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::handleSuccess, this::handleFailure));
+    }
+
+    @Override
+    public void handleSuccess(ProfileModel profileModel) {
+        profileInterface.getResponse(profileModel);
+    }
+
+    @Override
+    public void getVolunteerData(String name) {
+        Observable<VolunteerModel> observable = apiInterFace.getVolunteer(name);
+        compositeDisposable.add(observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::handleSuccess, this::handleFailure));
+    }
+
+    @Override
+    public void handleSuccess(VolunteerModel volunteerModel) {
+        profileInterface.getResponse(volunteerModel);
     }
 
     protected interface LoginInterface {
@@ -190,10 +252,26 @@ public class Presenter implements PresenterInterface {
         void getResponse(RideCompleted rideCompleted);
     }
 
-    protected  interface RegisterUserInterface {
+    protected interface RegisterUserInterface {
 
         void showMessages(String message);
 
         void getResponse(RegisterModel registerModel);
+    }
+
+    protected interface AddVolunteerInterface {
+
+        void showMessages(String message);
+
+        void getResponse(AddVolunteerModel addVolunteerModel);
+    }
+
+    protected interface ProfileInterface {
+
+        void showMessages(String message);
+
+        void getResponse(ProfileModel profileModel);
+
+        void getResponse(VolunteerModel volunteerModel);
     }
 }

@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.FirebaseException;
@@ -70,7 +71,6 @@ public class Registration extends AppCompatActivity implements Presenter.Registe
         presenter = new Presenter(this);
         mAuth = FirebaseAuth.getInstance();
         dialog = new Dialog(this);
-        getDetails();
     }
 
     private void getDetails() {
@@ -82,6 +82,29 @@ public class Registration extends AppCompatActivity implements Presenter.Registe
         eme3 = emeNum3.getText().toString().trim();
         eme4 = emeNum4.getText().toString().trim();
         eme5 = emeNum5.getText().toString().trim();
+        generateOtp();
+
+
+    }
+
+    @OnClick(R.id.register_bt)
+    public void onViewClicked() {
+        getDetails();
+    }
+
+    private void generateOtp() {
+        Log.e("Tag", "generateOtp: " + phoneNum);
+        try {
+            PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                    phoneNum,        // Phone number to verify
+                    60,                 // Timeout duration
+                    TimeUnit.SECONDS,   // Unit of timeout
+                    this,               // Activity (for callback binding)
+                    mCallbacks);
+        } catch (Exception e) {
+            Log.e("Tag", "generateOtp: here " + e.getLocalizedMessage());
+        }
+
         mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
             @Override
@@ -103,19 +126,20 @@ public class Registration extends AppCompatActivity implements Presenter.Registe
                 // now need to ask the user to enter the code and then construct a credential
                 // by combining the code with a verification ID.
                 Log.d("tag", "onCodeSent:" + verificationId);
-                Dialog dialog = new Dialog(Registration.this);
-                dialog.setContentView(R.layout.enter_code);
+                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(Registration.this);
+                bottomSheetDialog.setContentView(R.layout.enter_code);
                 DisplayMetrics metrics = getResources().getDisplayMetrics();
-                int width = metrics.widthPixels;
+                /*int width = metrics.widthPixels;
                 int height = metrics.heightPixels;
                 dialog.getWindow().setLayout((6 * width)/7, (6 * height)/7);
+*/
+                bottomSheetDialog.show();
 
-                dialog.show();
-
-                EditText code = dialog.findViewById(R.id.enter_code);
-                Button verifyCode = dialog.findViewById(R.id.verify_num);
+                EditText code = bottomSheetDialog.findViewById(R.id.enter_code);
+                Button verifyCode = bottomSheetDialog.findViewById(R.id.verify_num);
 
                 verifyCode.setOnClickListener(v -> {
+                    bottomSheetDialog.cancel();
                     PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code.getText().toString().trim());
                     signInWithPhoneAuthCredential(credential);
                 });
@@ -126,26 +150,6 @@ public class Registration extends AppCompatActivity implements Presenter.Registe
                 // ...
             }
         };
-    }
-
-    @OnClick(R.id.register_bt)
-    public void onViewClicked() {
-        getDetails();
-        generateOtp();
-    }
-
-    private void generateOtp() {
-        Log.e("Tag", "generateOtp: " + phoneNum);
-        try {
-            PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                    phoneNum,        // Phone number to verify
-                    60,                 // Timeout duration
-                    TimeUnit.SECONDS,   // Unit of timeout
-                    this,               // Activity (for callback binding)
-                    mCallbacks);
-        } catch (Exception e) {
-            Log.e("Tag", "generateOtp: " + e.getLocalizedMessage());
-        }
 
     }
 
@@ -175,21 +179,22 @@ public class Registration extends AppCompatActivity implements Presenter.Registe
 
     private void registerNewsUser(String phoneNumber) {
         Log.e("Tag", "registerNewsUser: " + phoneNumber);
-        Utility.showGifPopup(this, true, dialog);
+        Utility.showGifPopup(Registration.this, true, this.dialog);
         String fcmToken = Utility.getUtilityInstance().getPreference(this, Config.FCM);
-        presenter.registerUser(phoneNumber, userName, eme1, eme2, eme3, eme4, eme5, fcmToken);
+        presenter.registerUser(phoneNumber.substring(3), userName, eme1, eme2, eme3, eme4, eme5, fcmToken);
     }
 
     @Override
     public void showMessages(String message) {
-        Utility.showGifPopup(this, false, dialog);
+        Utility.showGifPopup(Registration.this, false, this.dialog);
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void getResponse(RegisterModel registerModel) {
-        Utility.showGifPopup(this, false, dialog);
+        Utility.showGifPopup(Registration.this, false, this.dialog);
         if (registerModel.getSuccess().equalsIgnoreCase("yes")) {
+            Utility.getUtilityInstance().setPreference(this, Config.NAME, userName);
             startActivity(new Intent(Registration.this, Login.class));
         }
     }

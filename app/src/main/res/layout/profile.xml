@@ -84,9 +84,9 @@
 
         <LinearLayout
             android:id="@+id/before_v"
-            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:orientation="vertical">
 
             <Button
@@ -98,14 +98,6 @@
                 android:text="Register"
                 android:textColor="@color/theme_white" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="5dp"
-                android:gravity="center"
-                android:text="Click to register as a volunteer"
-                android:textColor="@color/redLignt" />
         </LinearLayout>
 
         <androidx.cardview.widget.CardView
@@ -113,66 +105,76 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
+            android:layout_marginTop="35dp"
             android:layout_marginRight="30dp"
-            app:cardBackgroundColor="@color/redLignt"
-            app:cardCornerRadius="20dp"
             android:visibility="gone"
-            android:layout_marginTop="35dp">
+            app:cardBackgroundColor="@color/redLignt"
+            app:cardCornerRadius="20dp">
 
             <LinearLayout
-                android:layout_margin="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="10dp"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Name: "
-                    android:textSize="20sp"
-                    android:textColor="@color/theme_white"/>
+                    android:textColor="@color/theme_white"
+                    android:textSize="20sp" />
+
                 <TextView
+                    android:id="@+id/vol_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Hari krishnan"
-                    android:textSize="18sp"
-                    android:textColor="@color/theme_white"/>
+                    android:textColor="@color/theme_white"
+                    android:textSize="18sp" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Aadhar Number: "
-                    android:textSize="20sp"
-                    android:textColor="@color/theme_white"/>
+                    android:textColor="@color/theme_white"
+                    android:textSize="20sp" />
+
                 <TextView
+                    android:id="@+id/vol_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text='asasd33dada3'
-                    android:textSize="18sp"
-                    android:textColor="@color/theme_white"/>
+                    android:textColor="@color/theme_white"
+                    android:textSize="18sp" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Driving License Number: "
-                    android:textSize="20sp"
-                    android:textColor="@color/theme_white"/>
+                    android:textColor="@color/theme_white"
+                    android:textSize="20sp" />
+
                 <TextView
+                    android:id="@+id/vol_dv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="asdasd3caca3f"
-                    android:textSize="18sp"
-                    android:textColor="@color/theme_white"/>
+                    android:textColor="@color/theme_white"
+                    android:textSize="18sp" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Vehicle Number: "
-                    android:textSize="20sp"
-                    android:textColor="@color/theme_white"/>
+                    android:textColor="@color/theme_white"
+                    android:textSize="20sp" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="asdas3es"
-                    android:textSize="18sp"
-                    android:textColor="@color/theme_white"/>
+                    android:textColor="@color/theme_white"
+                    android:textSize="18sp" />
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>

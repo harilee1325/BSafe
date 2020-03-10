@@ -15,6 +15,43 @@
       },
       "oauth_client": [
         {
+          "client_id": "498646989916-djtjqejibsdbsbklgell2qtmuro40okq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.harilee.bsafe",
+            "certificate_hash": "9f0f8170295d9458543ec80756c1a2bf45251a30"
+          }
+        },
+        {
+          "client_id": "498646989916-ft2tbtdfm0tdru4aqeq3gj7u7r5jnrvm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7EgP92aVwFFslAcSIFIzze2FAtUEh9Bk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "498646989916-ft2tbtdfm0tdru4aqeq3gj7u7r5jnrvm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:498646989916:android:8b2c073a013ef44bd8ba99",
+        "android_client_info": {
+          "package_name": "com.harilee.bsafeadmin"
+        }
+      },
+      "oauth_client": [
+        {
           "client_id": "498646989916-ft2tbtdfm0tdru4aqeq3gj7u7r5jnrvm.apps.googleusercontent.com",
           "client_type": 3
         }

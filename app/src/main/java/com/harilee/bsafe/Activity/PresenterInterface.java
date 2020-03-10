@@ -5,8 +5,10 @@ import com.harilee.bsafe.Model.AssignCabModel;
 import com.harilee.bsafe.Model.LoginModel;
 import com.harilee.bsafe.Model.NearbyModel;
 import com.harilee.bsafe.Model.PathModel;
+import com.harilee.bsafe.Model.ProfileModel;
 import com.harilee.bsafe.Model.RegisterModel;
 import com.harilee.bsafe.Model.RideCompleted;
+import com.harilee.bsafe.Model.VolunteerModel;
 
 public interface PresenterInterface {
 
@@ -14,7 +16,7 @@ public interface PresenterInterface {
 
     void registerUser(String phoneNumber, String userName, String eme1, String eme2, String eme3, String eme4, String eme5, String fcmToken);
 
-    void addVolunter();
+    void addVolunter(String vehicleNumStr, String licenceNumStr, String idNumStr, String name, String fcm, String lat, String lng);
 
     void searchCab(double latitude, double longitude);
 
@@ -39,5 +41,13 @@ public interface PresenterInterface {
     void rideCompleted(String preference, String preference1);
 
     void handleSuccess(RideCompleted rideCompleted);
+
+    void getProfileData(String number);
+
+    void handleSuccess(ProfileModel profileModel);
+
+    void getVolunteerData(String name);
+
+    void handleSuccess(VolunteerModel volunteerModel);
 
 }
